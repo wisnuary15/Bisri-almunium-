@@ -1,0 +1,57 @@
+name: Auto Commit
+
+on:
+  push:
+    branches:
+      - main
+
+  schedule:
+     - cron: '0 */3 * * 1'   # Jalankan 5 kali setiap Senin (setiap 3 jam sekali)
+     - cron: '0 */2 * * 2'   # Jalankan 7 kali setiap Selasa (setiap 2 jam sekali)
+     - cron: '0 */4 * * 3'   # Jalankan 6 kali setiap Rabu (setiap 4 jam sekali)
+     - cron: '0 */3 * * 4'   # Jalankan 5 kali setiap Kamis (setiap 3 jam sekali)
+     - cron: '0 */2 * * 5'   # Jalankan 7 kali setiap Jumat (setiap 2 jam sekali)
+     - cron: '0 */3 * * 6'   # Jalankan 5 kali setiap Sabtu (setiap 3 jam sekali)
+     - cron: '0 */2 * * 0'   # Jalankan 7 kali setiap Minggu (setiap 2 jam sekali)
+
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Modify Last Update
+        run: |
+          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
+          echo $d > LAST_UPDATED
+
+      - name: Commit Changes
+        run: |
+          git config --local user.name "wisnuary15"
+          git config --local user.email "aryswadanawisnu@gmail.com"
+          git add -A
+
+          arr[0]="🚀 Updated: Auto commit"
+          arr[1]="🌟 Changed: Auto commit"
+          arr[2]="🎉 Fixed: Auto commit"
+          arr[3]="💫 Added: Auto commit"
+          arr[4]="✨ Updated: Auto commit"
+          arr[5]="🌠 Changed: Auto commit"
+          arr[6]="🌌 Fixed: Auto commit"
+          arr[7]="🌙 Added: Auto commit"
+          arr[8]="🚀 Updated: Auto commit"
+          arr[9]="🌟 Changed: Auto commit"
+
+          rand=$[$RANDOM % ${#arr[@]}]
+
+          git commit -m "${arr[$rand]}"
+
+      - name: GitHub Push
+        uses: ad-m/github-push-action@master
+        with:
+          force: true
+          directory: '.'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
