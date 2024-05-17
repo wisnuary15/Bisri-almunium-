@@ -6,7 +6,7 @@ on:
       - main
 
   schedule:
-     - cron: '* * * * * * *'   # Jalankan 5 kali setiap Senin (setiap 3 jam sekali)
+     - cron: '* * * * * '   # Jalankan 5 kali setiap Senin (setiap 3 jam sekali)
 
 jobs:
   auto_commit:
